@@ -1,0 +1,28 @@
+{
+    "name": "@hexaform/events",
+    "version": "1.0.0",
+    "description": "Event emitter for Hexaform",
+    "main": "src/index.ts",
+    "scripts": {
+        "reflect": "reflect.parse > cache/.reflection-data.json && reflect.paramtypes cache/.reflection-data.json src/paramtypes.ts",
+        "build": "rm -rf dist/* && tsc && cp src/package.dist.json dist/package.json && cp README.md dist/README.md",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/hexaform/events.git"
+    },
+    "author": "Igor Stojadinović <mightytroll@gmail.com> (https://www.linkedin.com/in/igorstojadinovic/)",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/hexaform/events/issues"
+    },
+    "homepage": "https://github.com/hexaform/events#readme",
+    "devDependencies": {
+        "@types/node": "^22.7.5",
+        "typescript": "^5.6.3"
+    },
+    "peerDependencies": {
+        "@hexaform/container": "^1.1.0"
+    }
+}
