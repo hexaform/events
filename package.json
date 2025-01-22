@@ -1,12 +1,13 @@
 {
     "name": "@hexaform/events",
-    "version": "1.0.0",
+    "version": "2.0.1",
     "description": "Event emitter for Hexaform",
     "main": "src/index.ts",
     "scripts": {
+        "build": "npm run reflect && rm -rf dist/* && tsc && cp src/package.dist.json dist/package.json && cp README.md dist/README.md",
+        "publish": "npm run build && cd dist && npm publish --access=public",
         "reflect": "reflect.parse > cache/.reflection-data.json && reflect.paramtypes cache/.reflection-data.json src/paramtypes.ts",
-        "build": "rm -rf dist/* && tsc && cp src/package.dist.json dist/package.json && cp README.md dist/README.md",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "jest"
     },
     "repository": {
         "type": "git",
@@ -19,10 +20,13 @@
     },
     "homepage": "https://github.com/hexaform/events#readme",
     "devDependencies": {
+        "@types/jest": "^29.5.14",
         "@types/node": "^22.7.5",
+        "ts-jest": "^29.2.5",
+        "ts-node": "^10.9.2",
         "typescript": "^5.6.3"
     },
     "peerDependencies": {
-        "@hexaform/container": "^1.1.0"
+        "@hexaform/container": "^2.0.0"
     }
 }

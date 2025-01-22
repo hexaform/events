@@ -1,32 +1,11 @@
-import { Container } from "@hexaform/container";
+type Constructor<T> = new (...args: any[]) => T;
+type Class<T> = { prototype: T } | Constructor<T>;
 
-type Prototype<T> = { prototype: T };
-type HandlerLike<E, R = unknown> = { handle(event: E): R };
+interface Handler<T> {
+    handle(message: T): Promise<void> | void;
+}
 
-export class EventBus<Event extends { new (...args: any): Event }, Handler extends HandlerLike<Event, Result>, Result = unknown> {
-    private container: Container;
-    private events: Map<Prototype<Event>, Set<Prototype<Handler>>> = new Map();
-
-    constructor(container: Container) {
-        this.container = container;
-    }
-
-    subscribe(event: Event, handler: Prototype<Handler>): void {
-        let handlers = this.events.get(event);
-        if (!handlers) {
-            handlers = new Set();
-            this.events.set(event, handlers);
-        }
-
-        handlers.add(handler);
-    }
-
-    dispatch(event: Event): Promise<Array<Result>> {
-        let handlers: Array<Prototype<Handler>> = Array.from(this.events.get(event.constructor) || new Set<Prototype<Handler>>());
-
-        return Promise.all(handlers.map((handlerClass: Prototype<Handler>) => {
-            let handler = this.container.construct<Handler>(handlerClass);
-            return handler.handle(event);
-        }));
-    }
+export abstract class EventBus<Event> {
+    abstract register(event: Constructor<Event>, handler: Constructor<Handler<Event>>): Promise<void> | void;
+    abstract dispatch(event: Event): Promise<Array<void>> | Array<void>;
 }
